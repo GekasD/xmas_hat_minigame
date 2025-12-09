@@ -1,0 +1,5 @@
+_bakeresourcecache/
+scripts/point_script.d.ts
+maps/*.vmap
+*.vpk
+*.bak
