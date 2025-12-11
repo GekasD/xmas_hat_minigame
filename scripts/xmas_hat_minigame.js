@@ -14,17 +14,15 @@ const INFO_POINT_SPAWN_T_ENTITY_NAME = "xmas_hat_minigame.bot_spawn_fix_t";
 const MAX_HAT_PICKUP_DISTANCE_UNITS = 42;
 const MAX_HAT_STACK_COUNT = 6;
 
-const DROPPED_HAT_GLOW_ENABLE = true;
-const DROPPED_HAT_GLOW_COLOR_T = { r: 185, g: 120, b: 35 };
-const DROPPED_HAT_GLOW_COLOR_CT = { r: 55, g: 35, b: 185 };
-
 const TEAM_NUMBER_T = 2;
 const TEAM_NUMBER_CT = 3;
+
+const GAME_TIME_NEXT_TICK_OFFSET = 0.25;
 
 Instance.SetNextThink(Instance.GetGameTime());
 Instance.SetThink(() => {
     HatPickupCheck();
-    Instance.SetNextThink(Instance.GetGameTime() + 0.25);
+    Instance.SetNextThink(Instance.GetGameTime() + GAME_TIME_NEXT_TICK_OFFSET);
 });
 
 // Reset BOT info_target spawns on round start.
@@ -162,18 +160,10 @@ function DetachHatsFromPlayer(playerPawn) {
 
         if (hatParent.GetPlayerController() === playerPawn.GetPlayerController()) {
 
-            hatEntity.SetModel(FormatHatModelName(0)); // Set all hats back to default model for simplicity
+            hatEntity.SetModel("models/xmas_hat_minigame/xmas_hat_ground.vmdl"); // Set all hats to ground model
             hatEntity.SetParent(undefined);
 
             // TODO: use hatEntity.Teleport() to give them some randomness when they drop?
-            
-            if (DROPPED_HAT_GLOW_ENABLE) {
-                if (playerPawn.GetTeamNumber() === TEAM_NUMBER_T) {
-                    hatEntity.Glow(DROPPED_HAT_GLOW_COLOR_T);
-                } else if (playerPawn.GetTeamNumber() === TEAM_NUMBER_CT) {
-                    hatEntity.Glow(DROPPED_HAT_GLOW_COLOR_CT);
-                }
-            }
 
         }
 
@@ -236,9 +226,6 @@ function HatPickupCheck() {
 
                 // Since our model names are 0 indexed, no need to increment/decrement anything here
                 hatEntity.SetModel(FormatHatModelName(stealerHatCount));
-
-                // Unglow the hat since its gonna be attached to a player now
-                hatEntity.Unglow();
 
                 // Finally, attach the hat to the new player
                 AttachEntToPlayerEntHead(hatEntity, playerPawn);

@@ -15,9 +15,6 @@ A simple festive minigame you can add to your CS2 maps, the premise is that ever
 
 - The rest of the setup process is explained with point_worldtext entities inside the example vmap located in `maps/content_examples/xmas_hat_minigame.vmap`.
 
-- To disable hats from glowing change the `DROPPED_HAT_GLOW_ENABLE` variable inside the [xmas_hat_minigame.js](scripts/xmas_hat_minigame.js) script to false
-
-
 ### Known issues
 
 - Because of a CS2 bug, spawning hat entities in dynamically causes bot spawns to break, there is not much you can do about this so it is recommended to disable the navmesh on your map if possible (just deleting the `point_nav_walkable` entity will do).
